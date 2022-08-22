@@ -9,19 +9,16 @@ import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
 import com.amether.kmmpager.di.DiModule
-import com.amether.kmmpager.MainViewModel
+import com.amether.kmmpager.data.MainViewModel
 
 class MainActivity : AppCompatActivity() {
-
-    private val viewModel: MainViewModel by lazy {
-        DiModule().viewModel
-    }
 
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        val viewModel: MainViewModel = DiModule.viewModel
         val recyclerView = findViewById<RecyclerView>(R.id.news)
         val query = findViewById<EditText>(R.id.query)
         query.doOnTextChanged { text, _, _, _ ->

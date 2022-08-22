@@ -1,4 +1,4 @@
-package com.amether.kmmpager.data
+package com.amether.kmmpager.domain
 
 object NewsApi {
 

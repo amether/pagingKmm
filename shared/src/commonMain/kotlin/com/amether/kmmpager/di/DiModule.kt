@@ -1,13 +1,22 @@
 package com.amether.kmmpager.di
 
-import com.amether.kmmpager.MainViewModel
+import com.amether.kmmpager.data.MainViewModel
+import com.amether.kmmpager.data.HttpClientFactory
+import com.amether.kmmpager.domain.NewsApi
+import com.amether.kmmpager.domain.NewsRepo
 import org.kodein.di.*
 
-class DiModule : DIAware {
+object DiModule {
 
-    override val di: DI by DI.lazy {
-        bindProvider { MainViewModel() }
-    }
+    val viewModel: MainViewModel by kodein.instance()
+}
 
-    val viewModel: MainViewModel by di.instance()
+internal val kodein = DI.lazy {
+    bindSingleton { MainViewModel(
+        newsRepo = instance<NewsRepo>(),
+        newsApi = instance<NewsApi>()
+    ) }
+    bindSingleton { NewsApi }
+    bindSingleton { NewsRepo(instance()) }
+    bindSingleton { HttpClientFactory }
 }

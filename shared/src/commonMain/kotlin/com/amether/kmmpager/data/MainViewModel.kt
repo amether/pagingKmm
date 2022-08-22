@@ -1,28 +1,25 @@
-package com.amether.kmmpager
+package com.amether.kmmpager.data
 
-import com.amether.kmmpager.data.HttpClientFactory
-import com.amether.kmmpager.data.NewsApi
-import com.amether.kmmpager.data.NewsRepo
+import com.amether.kmmpager.domain.NewsApi
+import com.amether.kmmpager.domain.NewsRepo
 import com.amether.kmmpager.model.Article
 import dev.icerock.moko.mvvm.livedata.asFlow
 import dev.icerock.moko.mvvm.livedata.data
 import dev.icerock.moko.paging.LambdaPagedListDataSource
 import dev.icerock.moko.paging.Pagination
 import io.github.aakira.napier.Napier
+import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.launch
 
-class MainViewModel : BaseViewModel() {
-
-    private val newsRepo = NewsRepo(HttpClientFactory)
-    private val newsApi = NewsApi
+class MainViewModel(
+    private val newsRepo: NewsRepo,
+    private val newsApi: NewsApi
+) {
 
     private val _query = MutableStateFlow("")
 
     private val pagination: Pagination<Article> = Pagination(
-        parentScope = getViewModelScope(),
+        parentScope = MainScope(),
         dataSource = LambdaPagedListDataSource {
             newsRepo.loadNews(newsApi.concatUrl(
                 query = _query.value,
