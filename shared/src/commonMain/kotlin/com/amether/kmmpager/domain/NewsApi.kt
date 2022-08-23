@@ -3,8 +3,8 @@ package com.amether.kmmpager.domain
 object NewsApi {
 
     private const val baseUrl = "https://newsapi.org/v2/everything"
-    private const val apiKey2 = "a3aebd96c7c94de09b552a2aee1675d4"
-    private const val apiKey = "5eb0bf747eba482791fed6e9a5d78e22"
+    private const val apiKey = "a3aebd96c7c94de09b552a2aee1675d4"
+    private const val apiKey2 = "5eb0bf747eba482791fed6e9a5d78e22"
     private const val baseParams = "?apiKey=$apiKey"
     private const val DEFAULT_PAGE_SIZE = 10
 
