@@ -8,6 +8,6 @@ import com.amether.kmmpager.model.toArticle
 class NewsRepo(private val httpClientFactory: HttpClientFactory) {
 
     suspend fun loadNews(url: String): List<Article> {
-        return HttpClientFactory.get<ArticlesResponseDto>(url).articles.map { it.toArticle() }
+        return httpClientFactory.get<ArticlesResponseDto>(url).articles.map { it.toArticle() }
     }
 }

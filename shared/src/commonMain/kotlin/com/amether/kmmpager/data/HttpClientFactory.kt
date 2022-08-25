@@ -9,6 +9,7 @@ import io.ktor.client.call.*
 import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.client.plugins.logging.*
 import io.ktor.client.request.*
+import io.ktor.client.statement.*
 import io.ktor.http.*
 import io.ktor.serialization.kotlinx.json.*
 import kotlinx.serialization.json.Json
@@ -36,17 +37,5 @@ object HttpClientFactory {
     }
 
     suspend inline fun <reified T> get(url: String): T = httpClient.get(url).body()
-
-    suspend fun postOrError(url: String, username: String, password: String): Response {
-        val request = httpClient.post(url) {
-            contentType(ContentType.Application.Json)
-            setBody(AuthRequest(username, password))
-        }
-        return if (request.status.value in 200..299) {
-            Response.Success(request.body())
-        } else {
-            Response.Failed(request.body(), request.status.value)
-        }
-    }
 
 }

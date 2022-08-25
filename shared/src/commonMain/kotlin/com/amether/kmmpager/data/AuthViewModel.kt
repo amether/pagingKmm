@@ -3,6 +3,7 @@ package com.amether.kmmpager.data
 import com.amether.kmmpager.domain.AuthRepo
 import com.amether.kmmpager.model.AuthDto
 import com.amether.kmmpager.model.Response
+import io.ktor.client.call.*
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
@@ -20,13 +21,11 @@ class AuthViewModel(
     fun auth(isSuccess: Boolean) {
         MainScope().launch {
             val username = if(isSuccess) TRUE_USERNAME else FALSE_USERNAME
-            when (val response = authRepo.auth(username, PASSWORD)) {
-                is Response.Failed -> {
-                    _errorFlow.emit(response)
-                }
-                is Response.Success -> {
-                    _dataFlow.value = response.authDto
-                }
+            val response = authRepo.auth(username, PASSWORD)
+            if (response.status.value in 200..299) {
+                _dataFlow.value = response.body()
+            } else {
+                _errorFlow.emit(Response.Failed(response.body(), response.status.value))
             }
         }
     }
